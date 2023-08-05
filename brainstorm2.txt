@@ -1,0 +1,74 @@
+Goal: Todo list app
+
+Level 1 Description:
+    App that houses different lists of todo items
+    Can navigate between different lists on task bar
+    Each list can add and delete todo items
+    Each list has some information
+
+Level 2 Description:
+    How will the app house different lists of items?
+        The app will have a module that contains a selection of objects
+            Item object to represent each todo item
+            List object to hold item objects
+
+    How will the user's navigate through the lists?
+        There will be buttons on the task bar that will open the list and adjust ui
+    
+    How will each list add and delete todo items?
+        The list will have a button that asks questions about the new elemente
+
+    What information does each item have? And which data type represents them
+        title:string
+        description: string
+        due date: date object
+        priority: string ('high', 'med', 'low')
+
+Level 3 Description:
+    What will go into the item objects?
+        properties:
+            title:string
+            description: string
+            due date: date object
+            priority: string ('high', 'med', 'low')
+        functions to interact with properties
+            getters and setters for all of them
+    
+    What will go into the list objects?
+        array of items
+        functions to interact with array of items        // check if item with item.title already exists
+
+            getter for array
+            getter for array name
+            add and delete items
+            search for item
+
+    How will the buttons open each list?
+        buttons will have a data attribute that is the name of a list
+        when clicked, the button will call an event listener that searches for 
+        list with same name and render it
+
+    How will will list add and delete todo items?
+        add:
+            bring up add item form
+            add function will bring up a text box with fields for item information
+            confirm button in text box will then call the an add funciton
+
+        delete:
+            button next to the element will call the delete element from list
+
+Level 4 Descriptions:
+    What will the add and delete functions take as arguments?
+        add
+            an item object
+        delte
+            the item title (linked with dom element and button);
+        
+    How will the program search for the name of the list?  How will the program then render the correct list
+        The lists will be held in a named array. Pressing the button will call a 
+        function that finds the list object with the same name as the one attached to the button.
+        The function will then unrender the last list then render the new one.
+    
+    
+
+  

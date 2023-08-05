@@ -1,0 +1,52 @@
+core elements:
+
+Item: Title, Description, DueDate, Priority
+    Setters and Getters for each property
+
+Project/List:
+    take name of list
+    Array to hold multiple itmes
+    function to return item array
+    getter for list
+    Functions to add and delete lements from list
+
+Some sort of storage to hold the list themselves 
+    maybe just an simple array hidden in index.js
+
+Front end plan
+Content in index file
+
+Function to render list{
+    takes a list object/name;
+    loops through list and renders each item (separate function);
+}
+
+function to render item{
+    create new item element
+    takes in item object
+    loops through keys 
+    for each key
+        create an dom element with the key name as class
+        append each info element to item element
+}
+
+funciton to unrender list {
+    looks for current list object list object
+    removes it from the listwrapper
+}
+
+class to handle events
+function to take an item, then return a button that refers to it
+
+function that handles deleting items {
+    calls the list function to delete the item
+    calls the on
+
+    event handler to add new list
+
+    button with event handler to add new items to a list
+}
+
+function that takes list of list objects then creates buttons to switch to them {
+
+}

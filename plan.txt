@@ -1,0 +1,22 @@
+1 Create Object module to hold information:
+     What will go into the item objects?
+        properties:
+            title:string
+            description: string
+            due date: date object
+            priority: string ('high', 'med', 'low')
+        functions to interact with properties
+            getters and setters for all of them
+    
+    What will go into the list objects?
+        array of items
+        functions to interact with array of items
+            getter for array
+            getter for array name
+            add and delete items
+                add: takes item object
+                    Note: make checks to check if there is already an item with that title
+                delete: takes item title
+            search for index of item with a certain title
+
+
