@@ -17,6 +17,7 @@ const todoConverter = (() => {
    const renderItem = (item) => {
         const itemElement = document.createElement('div');
         itemElement.classList.add('item');
+        itemElement.setAttribute('data-title', item.title)
         for (const key in item) {
             const infoElement = document.createElement('div');
             infoElement.classList.add(`${key}`);
@@ -41,14 +42,14 @@ export const uiHandler = (container) => {
     
     // sample elements
     const testList1 = list('test1');
-    testList1.addItem(item('test1', 'test1', 'test1', 'test1'));
-    testList1.addItem(item('test1', 'test1', 'test1', 'test1'));
-    testList1.addItem(item('test1', 'test1', 'test1', 'test1'));
+    testList1.addItem(item('title1', 'desc1', 'date1', 'priority1'));
+    testList1.addItem(item('title2', 'desc2', 'date2', 'priority2'));
+    testList1.addItem(item('title3', 'desc3', 'date3', 'priority1'));
 
     const testList2 = list('test2');
-    testList2.addItem(item('test2', 'test2', 'test2', 'test2'));
-    testList2.addItem(item('test2', 'test2', 'test2', 'test2'));
-    testList2.addItem(item('test2', 'test2', 'test2', 'test2'));
+    testList2.addItem(item('title1', 'desc1', 'date1', 'priority1'));
+    testList2.addItem(item('title2', 'desc2', 'date2', 'priority2'));
+    testList2.addItem(item('title3', 'desc3', 'date3', 'priority1'));
     _collection.addList(testList1);
     _collection.addList(testList2);
 
@@ -107,13 +108,45 @@ export const uiHandler = (container) => {
         return navbar;
     }
 
+    // will call to render the items of '_currentList' as dom elements
+    // then will update the listWrapper element with said list
+    // also adds delete buttons for each item element
     const loadList = () => {
-        listWrapper.appendChild(todoConverter.renderList(_currentList));
+        const renderedList = todoConverter.renderList(_currentList);
+        const itemElements = renderedList.querySelectorAll('.item');
+
+        listWrapper.appendChild(renderedList);
+
+        // adding delete buttons for item elements
+        itemElements.forEach(itemElement => {
+            const itemTitle = itemElement.getAttribute('data-title');
+            const deleteBtn = document.createElement('button');
+            deleteBtn.classList.add('delete-item-btn');
+            deleteBtn.setAttribute('data-target', itemTitle);
+            deleteBtn.textContent = 'X';
+            
+            deleteBtn.addEventListener('click', () => {
+                // remove item from dom
+                unloadItem(renderedList, itemElement);
+
+                // delete item from '_currentList'
+                _currentList.deleteItem(itemTitle);
+
+            })
+
+            itemElement.appendChild(deleteBtn);
+
+        })
     }
 
+    // removes itemElement from dom
+    const unloadItem = (listElement, itemElement) => {
+        listElement.removeChild(itemElement);
+    }
     const unloadList = () => {
         listWrapper.innerHTML = '';
     }
+    
     return {
         loadPage
     }
