@@ -69,6 +69,79 @@ Level 4 Descriptions:
         function that finds the list object with the same name as the one attached to the button.
         The function will then unrender the last list then render the new one.
     
-    
+    How will new lists be created and managed?
+         todo will have an collection object factory that houses an array of lists
+         lists will be added there.
+         Note: this will only hold lists and do operations on lists
 
+Level 5 questions: sp
+    What will the collection moduels contain? split into collection object and transfer rest of utilities into ui handler
+        Array for lists
+        variable to track current list
+        Function to return array of lists
+        Function for adding lists
+        Function for deleting lists
+        Function for retrieving list
+        Array for button dom elements navigate list
+        Function that generates buttons based on lists
   
+    How do I render the things on to the screen?
+        Create a ui handler module to render ui and others
+
+Level 6 questions:
+
+    What do I need to render?
+        Buttons (taskbar)
+        current List
+            each item in current list with info and delete button
+        Delete and add list buttons
+
+Level 7 questions:
+    How do I render all of the buttons for list navigation?
+        Go through the collection element, for each list in interanl array,
+        Make a button and give it event listener to render the list
+
+    Do I want to return elements, or just set them in function
+        have the ui handler return as small of an component as possible
+        then have a separate page handler for organizing all of the eleemnts
+
+    How do I coordinate delete button to list
+        in when creating each delete button, set a data attribute to the name of the list
+        then when it is clicked, call delete list with current list then that attribute
+        as the argument.
+
+Level 8 questions:
+    How do I track the current list
+        Keep current list in as a member in the ui handler object
+        then when a list is rendered, update it.
+
+    What paremeters will the render button funciton get?
+        an array of list objects (via colleciton.get lists)
+
+    Can another layer be added to the rendering?
+        maybe have one class render components, then another class call the methods of that class
+        so like a producer then an assembler.
+
+
+Level 9 questions:
+    How are the responsibilities going to be handled?
+        keep most of the functionality of the 'ui handler' in the componenet generator class and return componenets
+        But then organize generated compnents in the assembler class
+            also the buttons will have an effect on this layer so that the page can be rerender when necessary.
+
+    How will the uiHandler update the stored lists?
+        the uihandler will maintain an internal list collection.
+        then when the event listeners are triggered, the internal collection will be
+        updated with its methods
+
+        Note: I was worried about having to navigate through layers of objects
+        to add new list, but then I remembered, that all the ui changes would happen through the buttons,
+        not the console so all of the navigation is baked into the ui handler.
+
+
+Level 10 questions? 
+    What order will things be loaded into the page?
+        Header (optional), taskbar, then lists
+
+    How are new items going to be loaded into the page
+        for now, just reload everything completely, this is the easiest solution 

@@ -22,7 +22,6 @@ export const list = (name) => {
 
     const deleteItem = (itemTitle) => {
         const index = indexOf(itemTitle);
-        console.log(index);
         if (index || index === 0) {
             _items.splice(index, 1);
         }
@@ -39,7 +38,7 @@ export const list = (name) => {
         }
         return NaN;
     }
-    
+
     return {
         get name() {
             return _name;
@@ -48,7 +47,60 @@ export const list = (name) => {
         get items() {
             return _items;
         },
-        addItem,
-        deleteItem
+        addItem, deleteItem
+    }
+}
+
+export const collection = () => {
+    const _lists = [];
+
+     // adds list element to array (if one with the same title does not exist)
+     const addList = (list) => {
+        // check if list with list.name already exists
+        const index = indexOf(list.name);
+        if (indexOf(list.name) || index)
+        {
+            console.log('list already exists');
+        }
+        else
+        {
+            _lists.push(list)
+        }
+    }
+
+    const deleteList = (listName) => {
+        const index = indexOf(listName);
+        console.log(index);
+        if (index || index === 0) {
+            _lists.splice(index, 1);
+        }
+        else {
+            console.log('no such list');
+        }
+    }
+
+    // returns the index of the list object with name 'listName'
+    const indexOf = (listName) => {
+        for (let index = 0; index < _lists.length; index++) {
+            if (_lists[index].name === listName)
+                return index;
+        }
+        return NaN;
+    }
+
+    const findList = (listName) => {
+        return _lists.find(list => list.name === listName);
+    }
+    return {
+        get lists() {
+            return _lists;
+        },
+        get firstList() {
+            if (_lists.length < 1)
+                return undefined;
+            else
+                return _lists[0];
+        },
+        addList, deleteList, findList
     }
 }

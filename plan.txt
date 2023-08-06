@@ -1,3 +1,4 @@
+import
 1 Create Object module to hold information:
      What will go into the item objects?
         properties:
@@ -20,3 +21,29 @@
             search for index of item with a certain title
 
 
+    what will go in the collection object?
+        array of list
+            getter for list array
+            add list: takes list object
+            delete list: takes list name
+            search for list: takes title and returns list object[]
+
+2 Create ui module to handle rendering elements
+    What will go in the todoConverter object (translates to elements into dom elements)
+        function to render item list: uses 'current' returns a list of item dom elements
+            remember to add item delete buttons here.
+        function to render each item: takes an item returns an item dom element
+        function that 
+
+    What will go into the uiHandeler object?
+        generate nav buttons from a list list (from the collection class)
+        function that renders entire page;
+        function that reloads todolist
+            renders current list variable
+            
+        function that reloads nav list
+            creates a bunch button elements with event listeners to render list
+
+        have a render list button that uses the object generator
+
+        function to set currentList

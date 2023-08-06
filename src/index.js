@@ -1,9 +1,6 @@
-import {item, list} from './todo.js'
-const test = item('title', 'desc', 'date', 'priority');
-console.log(test);
+import {item, list, collection} from './todo.js'
+import {uiHandler} from './ui.js'
 
-const testList = list('name');
-testList.addItem(test);
-console.log(testList.items);
-testList.deleteItem('title');
-console.log(testList.items);
+const content = document.querySelector('.content');
+const handler = uiHandler(content);
+handler.loadPage();
