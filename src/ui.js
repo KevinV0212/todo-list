@@ -135,19 +135,110 @@ export const uiHandler = (container) => {
             })
 
             itemElement.appendChild(deleteBtn);
-
         })
+
+        // add an addItem button that
+        const newItemBtn = document.createElement('button');
+        newItemBtn.classList.add('new-item-btn');
+        newItemBtn.textContent = 'new item';
+        newItemBtn.addEventListener('click', loadItemInput);
+        listWrapper.appendChild(newItemBtn);
     }
 
-    // removes itemElement from dom
+    // removes itemElement from Dom
     const unloadItem = (listElement, itemElement) => {
         listElement.removeChild(itemElement);
     }
+    
+    // removes listElement from DOM
     const unloadList = () => {
         listWrapper.innerHTML = '';
     }
-    
+
+
+    const loadItemInput = () => {
+        const itemForm = document.createElement('form');
+        itemForm.classList.add('item-form');
+
+        // creation of form group for new item title
+        const titleGroup = document.createElement('div');
+        titleGroup.classList.add('form-group');
+
+        const titleLabel = '<label for="title-input">Title</label>';
+        const titleInput = '<input id="title-input" name="title-input placeholder="Title"/>';
+        titleGroup.innerHTML = titleLabel + titleInput;
+        itemForm.appendChild(titleGroup)
+
+        // creation of form group for new item description
+        const descGroup = document.createElement('div');
+        descGroup.classList.add('form-group');
+
+        const descLabel = '<label for="desc-input">Description</label>';
+        const descInput = '<input id="desc-input" name="desc-input" placeholder="Description"/>';
+        descGroup.innerHTML = descLabel + descInput;
+        itemForm.appendChild(descGroup);
+        
+        // creation of form group for new item date
+        const dateGroup = document.createElement('div');
+        dateGroup.classList.add('form-group');
+
+        const dateLabel = '<label for="date-input">Date</label>';
+        const dateInput = '<input id="date-input" name="date-input"/>';
+        dateGroup.innerHTML = dateLabel + dateInput;
+        itemForm.appendChild(dateGroup);
+        // creation of form group for new item priority
+        const priorityGroup = document.createElement('div');
+        priorityGroup.classList.add('form-group');
+        const prioritySet = document.createElement('fieldset');
+        
+        const priorityLegend = '<legend>Priority</legend>';
+        
+        const priorityLow = '<label for="priority-low">Low</label>' +
+                            '<input type="radio" id="priority-low" name="priority-input" value="low"/>';
+
+        const priorityMed = '<label for="priority-med">Med</label>' +
+                            '<input type="radio" id="priority-med" name="priority-input" value="med"/>';
+        
+        const priorityHigh = '<label for="priority-high">High</label>' +
+                             '<input type="radio" id="priority-high" name="priority-input" value="high"/>';
+        prioritySet.innerHTML = priorityLegend + priorityLow + priorityMed + priorityHigh;
+        priorityGroup.appendChild(prioritySet);
+        itemForm.appendChild(priorityGroup);
+
+        listWrapper.appendChild(itemForm);
+
+        // create button to add new element from info
+        const addItemBtn = document.createElement('button');
+        addItemBtn.classList.add('add-item-btn');
+        addItemBtn.textContent = 'add item';
+
+        itemForm.appendChild(addItemBtn);
+
+        // addItem btn should add new button from form info, then reload list
+        addItemBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            // capture input from input fields;
+            const newTitle = document.querySelector('#title-input').value;
+            const newDesc = document.querySelector('#desc-input').value;
+            const newDate = document.querySelector('#date-input').value;
+            const newPriority = prioritySet.querySelector(':checked').value;
+            
+            const newItem = item(newTitle, newDesc, newDate, newPriority);
+            _currentList.addItem(newItem);
+            unloadItemInput();
+            unloadList();
+            loadList();
+        })
+
+
+        
+    }
+    const unloadItemInput = () => {
+        const itemForm = document.querySelector('.item-form');
+        listWrapper.removeChild(itemForm);
+    }
     return {
         loadPage
     }
 }
+

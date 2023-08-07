@@ -145,3 +145,22 @@ Level 10 questions?
 
     How are new items going to be loaded into the page
         for now, just reload everything completely, this is the easiest solution 
+
+Level 11 questions?
+
+    How will the page add items?
+        have a form
+            It will have each of the fields (title, desc, date, priority)
+        give the form a add button that connects to a function that creates a new itemElement
+            with all of the form info and adds it to current list
+            unload list then reload list
+
+    How will the page delete lists?
+        Similarly to items, just add a delete button next to the each list in navbar
+        then this time, unload and reload navbar
+
+    How will the page add page
+        add a add list button at the end of navbar
+        then make add a small form for for the new list title and an add button
+        add button will then take the list name, then craete a new list and add it to the navbar
+        then reload the navbar

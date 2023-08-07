@@ -47,3 +47,13 @@ import
         have a render list button that uses the object generator
 
         function to set currentList
+
+3 How will the uiHandler delete items?
+    save the rendered buttons into a variable
+    then capture them with a document.querySelector('.item')
+    then add a delete button that links to a unload item function
+        also have current list remove the item that is the data-target of the delete button
+
+4 How will the uiHandler create items?
+    create a form that is absolutely placed in the center of the listWrapper
+    give it a button that calls the addItem on current list and take all of the fields
