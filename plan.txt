@@ -57,3 +57,8 @@ import
 4 How will the uiHandler create items?
     create a form that is absolutely placed in the center of the listWrapper
     give it a button that calls the addItem on current list and take all of the fields
+
+5 Create delete list buttons
+    go into render navbar function
+    add new element that will wrap navBtn and a future delete button
+    add a delete button that will delete _currentList from collection then reload list
