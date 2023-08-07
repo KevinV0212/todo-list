@@ -70,7 +70,6 @@ export const collection = () => {
 
     const deleteList = (listName) => {
         const index = indexOf(listName);
-        console.log(index);
         if (index || index === 0) {
             _lists.splice(index, 1);
         }

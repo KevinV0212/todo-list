@@ -75,7 +75,7 @@ export const uiHandler = (container) => {
         sidebarWrapper.appendChild(renderSidebar());
     }
     const unloadSidebar = () => {
-        sidebarWrapper.innerHtml = '';
+        sidebarWrapper.innerHTML = '';
     }
     // renders side bar element
     const renderSidebar = () => {
@@ -95,12 +95,11 @@ export const uiHandler = (container) => {
         // a navEntry element for each list; allows access and deletion of list
         _collection.lists.forEach(list => {
             const navEntry = document.createElement('div');
-            navEntry.classList.add('navEntry');
+            navEntry.classList.add('nav-entry');
             
             // creation of button to open/load lists
             const navBtn = document.createElement('button');
             navBtn.classList.add('nav-btn');
-            navBtn.setAttribute('data-target', list.name);
             navBtn.textContent = list.name;
             navBtn.addEventListener('click', () => {
                 setCurrentList(list)
@@ -109,19 +108,19 @@ export const uiHandler = (container) => {
             });
             navEntry.appendChild(navBtn);
 
-            // // creation of button to delete list
-            // const deleteListBtn = document.createElement('button');
-            // deleteListBtn.classList.add('delete-list-btn');
-            // deleteListBtn.setAttribute('data-target', list.name);
-            // deleteListBtn.textContent = 'X';
-            // deleteListBtn.addEventListener('click', (e) => {
-            //     e.preventDefault();
-            //     _collection.deleteList(list.name);
-            //     unloadSidebar();
-            //     loadSidebar();
+            // creation of button to delete list
+            const deleteListBtn = document.createElement('button');
+            deleteListBtn.classList.add('delete-list-btn');
+            deleteListBtn.setAttribute('data-target', list.name);
+            deleteListBtn.textContent = 'X';
+            deleteListBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                _collection.deleteList(list.name);
+                unloadSidebar();
+                loadSidebar();
 
-            // })
-            // navEntry.appendChild(deleteListBtn);
+            })
+            navEntry.appendChild(deleteListBtn);
 
             navbar.appendChild(navEntry);
         })
