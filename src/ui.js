@@ -73,6 +73,7 @@ export const uiHandler = (container) => {
 
     const loadSidebar = () => {
         sidebarWrapper.appendChild(renderSidebar());
+
     }
     const unloadSidebar = () => {
         sidebarWrapper.innerHTML = '';
@@ -83,6 +84,14 @@ export const uiHandler = (container) => {
         sidebar.classList.add('sidebar');
         
         sidebar.appendChild(renderNavbar(container));
+
+        const newListBtn = document.createElement('button');
+        newListBtn.textContent = '+';
+        newListBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            sidebar.appendChild(renderListInput());
+        })
+        sidebar.appendChild(newListBtn);
         
         return sidebar;
     }
@@ -115,9 +124,15 @@ export const uiHandler = (container) => {
             deleteListBtn.textContent = 'X';
             deleteListBtn.addEventListener('click', (e) => {
                 e.preventDefault();
+                if (list === _currentList)
+                {
+                    unloadList();
+                } 
+                
                 _collection.deleteList(list.name);
                 unloadSidebar();
                 loadSidebar();
+                
 
             })
             navEntry.appendChild(deleteListBtn);
@@ -126,6 +141,39 @@ export const uiHandler = (container) => {
         })
 
         return navbar;
+    }
+
+    // creates a form document for adding new list; appends form to 'container'
+    const renderListInput = () => {
+        // create form element
+        const listForm = document.createElement('form');
+        listForm.classList.add('list-form');
+        
+        // create form-group
+        const formGroup = document.createElement('div');
+        formGroup.classList.add('form-group');
+
+        const label = '<label for="name-input">List Name</label>'
+        const input = '<input id="name-input" name="name-input" placeholder="List Name"/>'
+        formGroup.innerHTML = label + input;
+
+        listForm.appendChild(formGroup);
+
+        const addListBtn = document.createElement('button');
+        addListBtn.classList.add('add-list-btn');
+        addListBtn.textContent = ('+');
+        addListBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            const newName = document.querySelector('#name-input').value;
+            _collection.addList(list(newName));
+
+            unloadSidebar();
+            loadSidebar();
+        })
+        listForm.append(addListBtn);
+
+        return listForm;
     }
 
     // will call to render the items of '_currentList' as dom elements
