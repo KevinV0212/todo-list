@@ -62,3 +62,18 @@ import
     go into render navbar function
     add new element that will wrap navBtn and a future delete button
     add a delete button that will delete _currentList from collection then reload list
+
+6 create add list form
+    pretty much just copy the idea of the create item form, but tone it down to one input
+    create universal add button at the end of the navbar
+        When clickign the button, a small form with new list name input will pop up
+        that and an add button 
+        After text input is done, the add button will have an event listener that
+            adds the new item with newItem name to the collection.
+            then just unload and reload the sidebar for the change
+
+Note: forms should also have cancel buttons that just close the form. 
+
+7 create cancel buttons for forms
+
+8 styling.

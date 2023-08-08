@@ -89,7 +89,8 @@ export const uiHandler = (container) => {
         newListBtn.textContent = '+';
         newListBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            sidebar.appendChild(renderListInput(sidebar));
+            if (!document.querySelector('.list-form'))
+                sidebar.appendChild(renderListInput(sidebar));
             
         })
 
@@ -232,7 +233,8 @@ export const uiHandler = (container) => {
         newItemBtn.textContent = 'new item';
         newItemBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            listWrapper.appendChild(renderItemInput(listWrapper));
+            if (!document.querySelector('.item-form'))
+                listWrapper.appendChild(renderItemInput(listWrapper));
         });
         listWrapper.appendChild(newItemBtn);
     }
@@ -286,14 +288,20 @@ export const uiHandler = (container) => {
         
         const priorityLegend = '<legend>Priority</legend>';
         
-        const priorityLow = '<label for="priority-low">Low</label>' +
-                            '<input type="radio" id="priority-low" name="priority-input" value="low"/>';
+        const priorityLowInner = '<input type="radio" id="priority-low" name="priority-input" value="low"/>' + 
+                            '<label for="priority-low">Low</label>'
+             
+        const priorityLow = `<div class="radio-group">${priorityLowInner}</div>`
 
-        const priorityMed = '<label for="priority-med">Med</label>' +
-                            '<input type="radio" id="priority-med" name="priority-input" value="med"/>';
-        
-        const priorityHigh = '<label for="priority-high">High</label>' +
-                             '<input type="radio" id="priority-high" name="priority-input" value="high"/>';
+        const priorityMedInner = '<input type="radio" id="priority-med" name="priority-input" value="med"/>' +
+                            '<label for="priority-med">Med</label>';
+                            
+        const priorityMed = `<div class="radio-group">${priorityMedInner}</div>`
+
+        const priorityHighInner = '<input type="radio" id="priority-high" name="priority-input" value="high"/>' + 
+                             '<label for="priority-high">High</label>';
+        const priorityHigh = `<div class="radio-group">${priorityHighInner}</div>`
+
         prioritySet.innerHTML = priorityLegend + priorityLow + priorityMed + priorityHigh;
         priorityGroup.appendChild(prioritySet);
         itemForm.appendChild(priorityGroup);
