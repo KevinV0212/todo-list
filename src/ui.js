@@ -89,8 +89,11 @@ export const uiHandler = (container) => {
         newListBtn.textContent = '+';
         newListBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            sidebar.appendChild(renderListInput());
+            sidebar.appendChild(renderListInput(sidebar));
+            
         })
+
+
         sidebar.appendChild(newListBtn);
         
         return sidebar;
@@ -143,8 +146,9 @@ export const uiHandler = (container) => {
         return navbar;
     }
 
-    // creates a form document for adding new list; appends form to 'container'
-    const renderListInput = () => {
+    // remders a form for adding list elements
+    // container parameter 
+    const renderListInput = (container) => {
         // create form element
         const listForm = document.createElement('form');
         listForm.classList.add('list-form');
@@ -159,9 +163,19 @@ export const uiHandler = (container) => {
 
         listForm.appendChild(formGroup);
 
+        // creates button to close list form
+        const cancelListBtn = document.createElement('button');
+        cancelListBtn.textContent = 'cancel';
+        cancelListBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            unloadElement(container, listForm);
+        })
+        listForm.append(cancelListBtn);
+
+        // button that adds list to collection then reloads sidebar
         const addListBtn = document.createElement('button');
         addListBtn.classList.add('add-list-btn');
-        addListBtn.textContent = ('+');
+        addListBtn.textContent = '+';
         addListBtn.addEventListener('click', (e) => {
             e.preventDefault();
 
@@ -173,8 +187,15 @@ export const uiHandler = (container) => {
         })
         listForm.append(addListBtn);
 
+        
         return listForm;
     }
+    
+    // removes element from given parent in DOM
+    const unloadElement = (parent, element) => {
+        parent.removeChild(element);
+    }
+    
 
     // will call to render the items of '_currentList' as dom elements
     // then will update the listWrapper element with said list
@@ -209,7 +230,10 @@ export const uiHandler = (container) => {
         const newItemBtn = document.createElement('button');
         newItemBtn.classList.add('new-item-btn');
         newItemBtn.textContent = 'new item';
-        newItemBtn.addEventListener('click', loadItemInput);
+        newItemBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            listWrapper.appendChild(renderItemInput(listWrapper));
+        });
         listWrapper.appendChild(newItemBtn);
     }
 
@@ -223,8 +247,9 @@ export const uiHandler = (container) => {
         listWrapper.innerHTML = '';
     }
 
+    
 
-    const loadItemInput = () => {
+    const renderItemInput = (container) => {
         const itemForm = document.createElement('form');
         itemForm.classList.add('item-form');
 
@@ -273,14 +298,23 @@ export const uiHandler = (container) => {
         priorityGroup.appendChild(prioritySet);
         itemForm.appendChild(priorityGroup);
 
-        listWrapper.appendChild(itemForm);
+       
 
+        // add item to cancel item form
+        const cancelItemBtn = document.createElement('button');
+        cancelItemBtn.textContent = 'cancel'
+
+        cancelItemBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            unloadElement(container, itemForm);
+        })
+        itemForm.appendChild(cancelItemBtn);
+        
         // create button to add new element from info
         const addItemBtn = document.createElement('button');
         addItemBtn.classList.add('add-item-btn');
         addItemBtn.textContent = 'add item';
-
-        itemForm.appendChild(addItemBtn);
 
         // addItem btn should add new button from form info, then reload list
         addItemBtn.addEventListener('click', (e) => {
@@ -293,18 +327,17 @@ export const uiHandler = (container) => {
             
             const newItem = item(newTitle, newDesc, newDate, newPriority);
             _currentList.addItem(newItem);
-            unloadItemInput();
             unloadList();
             loadList();
         })
+        itemForm.appendChild(addItemBtn);
 
-
+        return itemForm;
         
     }
-    const unloadItemInput = () => {
-        const itemForm = document.querySelector('.item-form');
-        listWrapper.removeChild(itemForm);
-    }
+    
+
+  
     return {
         loadPage
     }
