@@ -1,34 +1,6 @@
 import {item, list, collection} from './todo.js'
-
+import {components} from './components.js';
 // class to covert todo related objects into dom elements
-const todoConverter = (() => {
-   // create list element
-    const renderList = (list) => {
-        if (!list) {
-            return
-        }
-        const listElement = document.createElement('div');
-        listElement.classList.add('list');
-        // loop through list items then append a rendered list tiem
-        list.items.forEach(item => listElement.appendChild(renderItem(item)));
-        return listElement;
-    }
-   // return rendered list itme
-   const renderItem = (item) => {
-        const itemElement = document.createElement('div');
-        itemElement.classList.add('item');
-        itemElement.setAttribute('data-title', item.title)
-        for (const key in item) {
-            const infoElement = document.createElement('div');
-            infoElement.classList.add(`${key}`);
-            infoElement.textContent = `${item[key]}`;
-            itemElement.append(infoElement);
-        }
-        return itemElement;
-    }
-
-    return {renderList};
-})();
 
 // creates a uiHandler that will load dom elements within 'container' element
 export const uiHandler = (container) => {
@@ -102,7 +74,10 @@ export const uiHandler = (container) => {
         newListBtn.addEventListener('click', (e) => {
             e.preventDefault();
             if (!document.querySelector('.list-form'))
-                _container.appendChild(renderListInput(_container));
+            {
+                const listForm = components.renderListForm(unloadForm, handleAddList)
+                _container.appendChild(listForm);
+            }
         })
         sidebar.appendChild(newListBtn);
 
@@ -158,8 +133,8 @@ export const uiHandler = (container) => {
         return navbar;
     }
 
-    // remders a form for adding list elements
-    // container parameter 
+    // renders a form for adding list elements
+  
     const renderListInput = (container) => {
         const formWrapper = document.createElement('div');
         formWrapper.classList.add('form-wrapper');
@@ -194,11 +169,7 @@ export const uiHandler = (container) => {
         addListBtn.addEventListener('click', (e) => {
             e.preventDefault();
 
-            const newName = document.querySelector('#name-input').value;
-            _collection.addList(list(newName));
-
-            unloadSidebar();
-            loadSidebar();
+            listAddHandler();
             unloadElement(container, formWrapper);
         })
         listForm.appendChild(addListBtn);
@@ -215,7 +186,7 @@ export const uiHandler = (container) => {
     // then will update the listWrapper element with said list
     // also adds delete buttons for each item element
     const loadList = () => {
-        const renderedList = todoConverter.renderList(_currentList);
+        const renderedList = components.renderList(_currentList);
         const itemElements = renderedList.querySelectorAll('.item');
 
         listWrapper.appendChild(renderedList);
@@ -240,14 +211,17 @@ export const uiHandler = (container) => {
             itemElement.appendChild(deleteBtn);
         })
 
-        // add an addItem button that
+        // add button that opens form to add new item
         const newItemBtn = document.createElement('button');
         newItemBtn.classList.add('new-item-btn');
         newItemBtn.textContent = 'new item';
         newItemBtn.addEventListener('click', (e) => {
             e.preventDefault();
             if (!document.querySelector('.item-form'))
-                _container.appendChild(renderItemInput(_container));
+            {
+                const itemForm = components.renderItemForm(unloadForm, handleAddItem)
+                _container.appendChild(itemForm);
+            }
         });
         listWrapper.appendChild(newItemBtn);
     }
@@ -262,111 +236,42 @@ export const uiHandler = (container) => {
         listWrapper.innerHTML = '';
     }
 
-    
+    const unloadForm = () => {
+        const formElement = document.querySelector('.form-wrapper');
+        unloadElement(_container, formElement);
+    }
 
-    const renderItemInput = (container) => {
-        const formWrapper = document.createElement('div');
-        formWrapper.classList.add('form-wrapper');
-
-        const itemForm = document.createElement('form');
-        itemForm.classList.add('item-form');
-
-        // creation of form group for new item title
-        const titleGroup = document.createElement('div');
-        titleGroup.classList.add('form-group');
-
-        const titleLabel = '<label for="title-input">Title</label>';
-        const titleInput = '<input id="title-input" name="title-input placeholder="Title"/>';
-        titleGroup.innerHTML = titleLabel + titleInput;
-        itemForm.appendChild(titleGroup)
-
-        // creation of form group for new item description
-        const descGroup = document.createElement('div');
-        descGroup.classList.add('form-group');
-
-        const descLabel = '<label for="desc-input">Description</label>';
-        const descInput = '<input id="desc-input" name="desc-input" placeholder="Description"/>';
-        descGroup.innerHTML = descLabel + descInput;
-        itemForm.appendChild(descGroup);
+    // takes values of item form to add new item to current list
+    const handleAddItem = () => {
+        const title = document.querySelector('#title-input').value;
+        const desc = document.querySelector('#desc-input').value;
+        const date = document.querySelector('#date-input').value;
+        const priority = document.querySelector(':checked').value;
         
-        // creation of form group for new item date
-        const dateGroup = document.createElement('div');
-        dateGroup.classList.add('form-group');
+        const newItem = item(title, desc, date, priority);
+        _currentList.addItem(newItem);
+        unloadList();
+        loadList();
+        unloadForm();
+    }
 
-        const dateLabel = '<label for="date-input">Date</label>';
-        const dateInput = '<input id="date-input" name="date-input"/>';
-        dateGroup.innerHTML = dateLabel + dateInput;
-        itemForm.appendChild(dateGroup);
-        // creation of form group for new item priority
-        const priorityGroup = document.createElement('div');
-        priorityGroup.classList.add('form-group');
-        const prioritySet = document.createElement('fieldset');
-        
-        const priorityLegend = '<legend>Priority</legend>';
-        
-        const priorityLowInner = '<input type="radio" id="priority-low" name="priority-input" value="low"/>' + 
-                            '<label for="priority-low">Low</label>'
-             
-        const priorityLow = `<div class="radio-group">${priorityLowInner}</div>`
-
-        const priorityMedInner = '<input type="radio" id="priority-med" name="priority-input" value="med"/>' +
-                            '<label for="priority-med">Med</label>';
-                            
-        const priorityMed = `<div class="radio-group">${priorityMedInner}</div>`
-
-        const priorityHighInner = '<input type="radio" id="priority-high" name="priority-input" value="high"/>' + 
-                             '<label for="priority-high">High</label>';
-        const priorityHigh = `<div class="radio-group">${priorityHighInner}</div>`
-
-        prioritySet.innerHTML = priorityLegend + priorityLow + priorityMed + priorityHigh;
-        priorityGroup.appendChild(prioritySet);
-        itemForm.appendChild(priorityGroup);
-
-       
-
-        // add item to cancel item form
-        const cancelItemBtn = document.createElement('button');
-        cancelItemBtn.classList.add('delete-btn');
-        cancelItemBtn.textContent = 'cancel'
-
-        cancelItemBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-
-            unloadElement(container, formWrapper);
-        })
-        itemForm.appendChild(cancelItemBtn);
-        
-        // create button to add new element from info
-        const addItemBtn = document.createElement('button');
-        addItemBtn.classList.add('add-item-btn');
-        addItemBtn.textContent = 'add item';
-
-        // addItem btn should add new button from form info, then reload list
-        addItemBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            // capture input from input fields;
-            const newTitle = document.querySelector('#title-input').value;
-            const newDesc = document.querySelector('#desc-input').value;
-            const newDate = document.querySelector('#date-input').value;
-            const newPriority = prioritySet.querySelector(':checked').value;
-            
-            const newItem = item(newTitle, newDesc, newDate, newPriority);
-            _currentList.addItem(newItem);
-            unloadList();
-            loadList();
-            unloadElement(container, formWrapper);
-
-        })
-        itemForm.appendChild(addItemBtn);
-
-        formWrapper.appendChild(itemForm);
-        
-        return formWrapper;
-        
+    // takes values of list form to add new list to collection
+    const handleAddList = () => {
+        const name = document.querySelector('#name-input').value;
+        _collection.addList(list(name));
+        unloadSidebar();
+        loadSidebar();
+        unloadForm();
+    }
+  
+    const listAddHandler = () => {
+        e.preventDefault();
+        const newName = document.querySelector('#name-input').value;
+        _collection.addList(list(newName));
+        unloadSidebar();
+        loadSidebar();
     }
     
-
-  
     return {
         loadPage
     }

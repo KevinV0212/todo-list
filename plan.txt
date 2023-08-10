@@ -77,3 +77,9 @@ Note: forms should also have cancel buttons that just close the form.
 7 create cancel buttons for forms
 
 8 styling.
+
+9 Rorganize page due to design:
+    Pull edit and add forms onto a modal 
+    Reset styling to match design
+    Add edit functionality
+        copy the modals but add the buttons within the nav-entries and items in dom
