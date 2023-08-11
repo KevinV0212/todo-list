@@ -108,24 +108,16 @@ export const uiHandler = (container) => {
             navEntry.appendChild(navBtn);
 
             // creation of button to delete list
-            const deleteListBtn = document.createElement('button');
-            deleteListBtn.classList.add('delete-btn');
-            deleteListBtn.setAttribute('data-target', list.name);
-            deleteListBtn.textContent = 'X';
-            deleteListBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                if (list === _currentList)
-                {
-                    unloadList();
-                } 
-                
-                _collection.deleteList(list.name);
-                unloadSidebar();
-                loadSidebar();
-                
-
+            const editBtn = document.createElement('button');
+            editBtn.classList.add('delete-btn');
+            editBtn.setAttribute('data-target', list.name);
+            editBtn.textContent = 'edit';
+            editBtn.addEventListener('click', (e) => {
+                unloadForm();
+                const listForm = components.renderListEdit(unloadForm, handleEditList);
+                _container.appendChild(listForm);
             })
-            navEntry.appendChild(deleteListBtn);
+            navEntry.appendChild(editBtn);
 
             navbar.appendChild(navEntry);
         })
@@ -148,11 +140,7 @@ export const uiHandler = (container) => {
             editBtn.textContent = 'edit';
             
             editBtn.addEventListener('click', () => {
-                
-                if (document.querySelector('.item-form'))
-                {
-                    unloadForm();
-                }
+                unloadForm();
                 const itemTitle = itemElement.getAttribute('data-title');
                 const item = _currentList.findItem(itemTitle);
                 const itemForm = components.renderItemEdit(item, unloadForm, handleEditItem);
@@ -226,6 +214,13 @@ export const uiHandler = (container) => {
         unloadForm();
     }
     
+    const handleEditList = () => {
+        _currentList.name = document.querySelector('#name-input').value;
+
+        unloadSidebar();
+        loadSidebar();
+        unloadForm();
+    }
     return {
         loadPage
     }

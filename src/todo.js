@@ -48,13 +48,11 @@ export const list = (name) => {
     }
     
     return {
-        get name() {
-            return _name;
-        },
         // returns internal array of items
         get items() {
             return _items;
         },
+        name,
         addItem, deleteItem, findItem, replaceItem
     }
 }

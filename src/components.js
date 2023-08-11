@@ -28,7 +28,7 @@ export const components= (() => {
      }
      
      // function that renders form for adding new items
-     const renderItemForm = (cancelFunction, addFunction) => {
+     const renderItemForm = (cancelFunction, confirmFunction) => {
         const formWrapper = document.createElement('div');
         formWrapper.classList.add('form-wrapper');
 
@@ -99,17 +99,17 @@ export const components= (() => {
         itemForm.appendChild(cancelItemBtn);
         
         // create button to add new element from info
-        const addItemBtn = document.createElement('button');
-        addItemBtn.classList.add('add-item-btn');
-        addItemBtn.textContent = 'add item';
+        const confirmBtn = document.createElement('button');
+        confirmBtn.classList.add('confirm-btn');
+        confirmBtn.textContent = 'confirm';
 
         // addItem btn should add new button from form info, then reload list
-        addItemBtn.addEventListener('click', (e) => {
+        confirmBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            addFunction();
+            confirmFunction();
         })
 
-        itemForm.appendChild(addItemBtn);
+        itemForm.appendChild(confirmBtn);
 
         formWrapper.appendChild(itemForm);
         
@@ -117,7 +117,7 @@ export const components= (() => {
      }
 
      // function that renders form for adding new lists;
-     const renderListForm = (cancelFunction, addFunction) => {
+     const renderListForm = (cancelFunction, confirmFunction) => {
         const formWrapper = document.createElement('div');
         formWrapper.classList.add('form-wrapper');
         // create form element
@@ -144,14 +144,14 @@ export const components= (() => {
         listForm.append(cancelListBtn);
 
         // button that adds list to collection then reloads sidebar
-        const addListBtn = document.createElement('button');
-        addListBtn.classList.add('add-list-btn');
-        addListBtn.textContent = '+';
-        addListBtn.addEventListener('click', (e) => {
+        const confirmBtn = document.createElement('button');
+        confirmBtn.classList.add('confirm-btn');
+        confirmBtn.textContent = 'confirm';
+        confirmBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            addFunction();
+            confirmFunction();
         })
-        listForm.appendChild(addListBtn);
+        listForm.appendChild(confirmBtn);
 
         formWrapper.appendChild(listForm)
         
@@ -168,7 +168,7 @@ export const components= (() => {
         const titleInput = form.querySelector('#title-input');
         const descInput = form.querySelector('#desc-input');
         const dateInput = form.querySelector('#date-input');
-
+        
         titleInput.value = item.title;
         descInput.value = item.desc;
         dateInput.value = item.dueDate;
@@ -189,6 +189,12 @@ export const components= (() => {
 
         return form;
      }
+
+     const renderListEdit = (cancelFunction, addFunction) => {
+        const form = renderListForm(cancelFunction, addFunction);
+        
+        return form;
+     }
      // function that renders form for adding new items
-     return {renderList, renderItemForm, renderListForm, renderItemEdit};
+     return {renderList, renderItemForm, renderListForm, renderItemEdit, renderListEdit};
  })();
