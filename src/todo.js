@@ -38,7 +38,15 @@ export const list = (name) => {
         }
         return NaN;
     }
+    const findItem = (itemTitle) => {
+        return _items.find(item => item.title === itemTitle);
+    }
 
+    const replaceItem = (oldTitle, newItem) => {
+        const oldIndex = indexOf(oldTitle);
+        _items.splice(oldIndex, 1, newItem);
+    }
+    
     return {
         get name() {
             return _name;
@@ -47,7 +55,7 @@ export const list = (name) => {
         get items() {
             return _items;
         },
-        addItem, deleteItem
+        addItem, deleteItem, findItem, replaceItem
     }
 }
 
@@ -87,6 +95,7 @@ export const collection = () => {
         return NaN;
     }
 
+
     const findList = (listName) => {
         return _lists.find(list => list.name === listName);
     }
@@ -100,6 +109,6 @@ export const collection = () => {
             else
                 return _lists[0];
         },
-        addList, deleteList, findList
+        addList, deleteList, findList, 
     }
 }

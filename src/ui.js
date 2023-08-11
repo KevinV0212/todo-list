@@ -14,13 +14,13 @@ export const uiHandler = (container) => {
     
     // sample elements
     const testList1 = list('test1');
-    testList1.addItem(item('title1', 'desc1', 'date1', 'priority1'));
-    testList1.addItem(item('title2', 'desc2', 'date2', 'priority2'));
-    testList1.addItem(item('title3', 'desc3', 'date3', 'priority1'));
+    testList1.addItem(item('title1', 'desc1', 'date1', 'high'));
+    testList1.addItem(item('title2', 'desc2', 'date2', 'med'));
+    testList1.addItem(item('title3', 'desc3', 'date3', 'low'));
     const testList2 = list('test2');
-    testList2.addItem(item('title1', 'desc1', 'date1', 'priority1'));
-    testList2.addItem(item('title2', 'desc2', 'date2', 'priority2'));
-    testList2.addItem(item('title3', 'desc3', 'date3', 'priority1'));
+    testList2.addItem(item('title1', 'desc1', 'date1', 'high'));
+    testList2.addItem(item('title2', 'desc2', 'date2', 'med'));
+    testList2.addItem(item('title3', 'desc3', 'date3', 'low'));
     _collection.addList(testList1);
     _collection.addList(testList2);
 
@@ -131,56 +131,7 @@ export const uiHandler = (container) => {
         })
 
         return navbar;
-    }
-
-    // renders a form for adding list elements
-  
-    const renderListInput = (container) => {
-        const formWrapper = document.createElement('div');
-        formWrapper.classList.add('form-wrapper');
-        // create form element
-        const listForm = document.createElement('form');
-        listForm.classList.add('list-form');
-        
-        // create form-group
-        const formGroup = document.createElement('div');
-        formGroup.classList.add('form-group');
-
-        const label = '<label for="name-input">List Name</label>'
-        const input = '<input id="name-input" name="name-input" placeholder="List Name"/>'
-        formGroup.innerHTML = label + input;
-
-        listForm.appendChild(formGroup);
-
-        // creates button to close list form
-        const cancelListBtn = document.createElement('button');
-        cancelListBtn.textContent = 'cancel';
-        cancelListBtn.classList.add('delete-btn');
-        cancelListBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            unloadElement(container, formWrapper);
-        })
-        listForm.append(cancelListBtn);
-
-        // button that adds list to collection then reloads sidebar
-        const addListBtn = document.createElement('button');
-        addListBtn.classList.add('add-list-btn');
-        addListBtn.textContent = '+';
-        addListBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-
-            listAddHandler();
-            unloadElement(container, formWrapper);
-        })
-        listForm.appendChild(addListBtn);
-
-        formWrapper.appendChild(listForm)
-        
-        return formWrapper;
-    }
-    
-   
-    
+    }   
 
     // will call to render the items of '_currentList' as dom elements
     // then will update the listWrapper element with said list
@@ -193,22 +144,22 @@ export const uiHandler = (container) => {
 
         // adding delete buttons for item elements
         itemElements.forEach(itemElement => {
-            const itemTitle = itemElement.getAttribute('data-title');
-            const deleteBtn = document.createElement('button');
-            deleteBtn.classList.add('delete-btn');
-            deleteBtn.setAttribute('data-target', itemTitle);
-            deleteBtn.textContent = 'X';
+            const editBtn = document.createElement('button');
+            editBtn.textContent = 'edit';
             
-            deleteBtn.addEventListener('click', () => {
-                // remove item from dom
-                unloadItem(renderedList, itemElement);
-
-                // delete item from '_currentList'
-                _currentList.deleteItem(itemTitle);
-
+            editBtn.addEventListener('click', () => {
+                
+                if (document.querySelector('.item-form'))
+                {
+                    unloadForm();
+                }
+                const itemTitle = itemElement.getAttribute('data-title');
+                const item = _currentList.findItem(itemTitle);
+                const itemForm = components.renderItemEdit(item, unloadForm, handleEditItem);
+                _container.appendChild(itemForm);
+                
             })
-
-            itemElement.appendChild(deleteBtn);
+            itemElement.appendChild(editBtn);
         })
 
         // add button that opens form to add new item
@@ -225,20 +176,17 @@ export const uiHandler = (container) => {
         });
         listWrapper.appendChild(newItemBtn);
     }
-
-    // removes itemElement from Dom
-    const unloadItem = (listElement, itemElement) => {
-        listElement.removeChild(itemElement);
-    }
-    
+   
     // removes listElement from DOM
     const unloadList = () => {
         listWrapper.innerHTML = '';
+        unloadForm();
     }
 
     const unloadForm = () => {
         const formElement = document.querySelector('.form-wrapper');
-        unloadElement(_container, formElement);
+        if (formElement)
+            unloadElement(_container, formElement);
     }
 
     // takes values of item form to add new item to current list
@@ -254,7 +202,21 @@ export const uiHandler = (container) => {
         loadList();
         unloadForm();
     }
+    const handleEditItem = () => {
+        const form = document.querySelector('form');
 
+        const oldTitle = form.getAttribute('data-target');
+        const title = form.querySelector('#title-input').value;
+        const desc = form.querySelector('#desc-input').value;
+        const date = form.querySelector('#date-input').value;
+        const priority = document.querySelector(':checked').value;
+        
+        const newItem = item(title, desc, date, priority);
+        _currentList.replaceItem(oldTitle, newItem);
+        unloadList();
+        loadList();
+        unloadForm();
+    }
     // takes values of list form to add new list to collection
     const handleAddList = () => {
         const name = document.querySelector('#name-input').value;
@@ -262,14 +224,6 @@ export const uiHandler = (container) => {
         unloadSidebar();
         loadSidebar();
         unloadForm();
-    }
-  
-    const listAddHandler = () => {
-        e.preventDefault();
-        const newName = document.querySelector('#name-input').value;
-        _collection.addList(list(newName));
-        unloadSidebar();
-        loadSidebar();
     }
     
     return {

@@ -1,3 +1,4 @@
+import { item, list } from './todo.js'
 export const components= (() => {
     // create list element
      const renderList = (list) => {
@@ -21,6 +22,8 @@ export const components= (() => {
              infoElement.textContent = `${item[key]}`;
              itemElement.append(infoElement);
          }
+
+        const editBtn = document.createElement('button');
          return itemElement;
      }
      
@@ -154,6 +157,38 @@ export const components= (() => {
         
         return formWrapper;
      }
+
+     // creates an form for editing selected item
+     const renderItemEdit = (item, cancelFunction, editFunction) => {
+        const form = renderItemForm(cancelFunction, editFunction);
+        
+        const formElement = form.querySelector('form');
+        formElement.setAttribute('data-target', item.title);
+        // populate inputs with item's original values
+        const titleInput = form.querySelector('#title-input');
+        const descInput = form.querySelector('#desc-input');
+        const dateInput = form.querySelector('#date-input');
+
+        titleInput.value = item.title;
+        descInput.value = item.desc;
+        dateInput.value = item.dueDate;
+
+        // set priority radio to priority value
+        if (item.priority === 'high')
+        {
+            form.querySelector('#priority-high').checked = true;
+        }
+        else if (item.priority === 'med')
+        {
+            form.querySelector('#priority-med').checked = true;
+
+        }
+        else {
+            form.querySelector('#priority-low').checked = true;
+        }
+
+        return form;
+     }
      // function that renders form for adding new items
-     return {renderList, renderItemForm, renderListForm};
+     return {renderList, renderItemForm, renderListForm, renderItemEdit};
  })();
