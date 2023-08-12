@@ -107,18 +107,6 @@ export const uiHandler = (container) => {
             });
             navEntry.appendChild(navBtn);
 
-            // creation of button to delete list
-            const editBtn = document.createElement('button');
-            editBtn.classList.add('delete-btn');
-            editBtn.setAttribute('data-target', list.name);
-            editBtn.textContent = 'edit';
-            editBtn.addEventListener('click', (e) => {
-                unloadForm();
-                const listForm = components.renderListEdit(unloadForm, handleEditList);
-                _container.appendChild(listForm);
-            })
-            navEntry.appendChild(editBtn);
-
             navbar.appendChild(navEntry);
         })
 
@@ -132,8 +120,26 @@ export const uiHandler = (container) => {
         const renderedList = components.renderList(_currentList);
         const itemElements = renderedList.querySelectorAll('.item');
 
-        listWrapper.appendChild(renderedList);
+        // list name and edit elements
+        const listName = document.createElement('h2')
+        listName.textContent = _currentList.name;
+        listWrapper.appendChild(listName);
+        const editBtn = document.createElement('button');
+        editBtn.classList.add('delete-btn');
+        editBtn.setAttribute('data-target', list.name);
+        editBtn.textContent = 'edit';
+        editBtn.addEventListener('click', (e) => {
+            unloadForm();
+            const listForm = components.renderListEdit(unloadForm, handleEditList);
+            _container.appendChild(listForm);
+        })
 
+
+        listWrapper.appendChild(editBtn);
+        
+        listWrapper.appendChild(renderedList);
+        listWrapper.appendChild(renderedList);
+        
         // adding delete buttons for item elements
         itemElements.forEach(itemElement => {
             const editBtn = document.createElement('button');
@@ -219,6 +225,8 @@ export const uiHandler = (container) => {
 
         unloadSidebar();
         loadSidebar();
+        unloadList();
+        loadList();
         unloadForm();
     }
     return {
