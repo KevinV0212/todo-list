@@ -83,5 +83,7 @@ Note: forms should also have cancel buttons that just close the form.
     Reset styling to match design
     Add edit functionality
         copy the modals but add the buttons within the nav-entries and items in dom
-        add 
+        create info elements for forms
+        add delete functionality to list edit
+
     

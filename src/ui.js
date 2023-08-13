@@ -1,10 +1,13 @@
 import {item, list, collection} from './todo.js'
 import {components} from './components.js';
-// class to covert todo related objects into dom elements
 
-// creates a uiHandler that will load dom elements within 'container' element
-export const uiHandler = (container) => {
+import '../node_modules/@mdi/font/css/materialdesignicons.css';
+
+// creates a uiHandler that will load dom elements within 'wrapper' element
+export const uiHandler = (wrapper) => {
     
+    const container = document.createElement('div');
+    container.classList.add('container');
     const sidebarWrapper = document.createElement('div');
     sidebarWrapper.classList.add('sidebar-wrapper');
     const listWrapper = document.createElement('div');
@@ -27,7 +30,7 @@ export const uiHandler = (container) => {
     let _currentList = _collection.firstList;
     
     // dom element that ui Handler will direct out to
-    const _container = container;
+    const _wrapper = wrapper;
 
     const setCurrentList = (list) => {
         _currentList = list;
@@ -43,8 +46,18 @@ export const uiHandler = (container) => {
         loadSidebar();
         loadList();
 
-        _container.appendChild(sidebarWrapper);
-        _container.appendChild(listWrapper);
+        const header = document.createElement('header');
+
+        const siteTitle = document.createElement('h1');
+        siteTitle.classList.add('site-title');
+        siteTitle.textContent = 'Todo List';
+        header.appendChild(siteTitle);
+
+        container.appendChild(header);
+        container.appendChild(sidebarWrapper);
+        container.appendChild(listWrapper);
+
+        _wrapper.appendChild(container);
     }
 
     // function that loads the sidebar into sidebarWrapper
@@ -69,15 +82,14 @@ export const uiHandler = (container) => {
 
         // button to open form to add new list
         const newListBtn = document.createElement('button');
-        newListBtn.classList.add('new-list-btn');
+        newListBtn.classList.add('add-btn');
         newListBtn.textContent = 'Add New List';
         newListBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            if (!document.querySelector('.list-form'))
-            {
-                const listForm = components.renderListForm(unloadForm, handleAddList)
-                _container.appendChild(listForm);
-            }
+            unloadForm();
+            const listForm = components.renderListForm(unloadForm, 
+                                                       handleAddList)
+            container.appendChild(listForm);
         })
         sidebar.appendChild(newListBtn);
 
@@ -120,24 +132,43 @@ export const uiHandler = (container) => {
         const renderedList = components.renderList(_currentList);
         const itemElements = renderedList.querySelectorAll('.item');
 
-        // list name and edit elements
-        const listName = document.createElement('h2')
-        listName.textContent = _currentList.name;
-        listWrapper.appendChild(listName);
-        const editBtn = document.createElement('button');
-        editBtn.classList.add('delete-btn');
-        editBtn.setAttribute('data-target', list.name);
-        editBtn.textContent = 'edit';
-        editBtn.addEventListener('click', (e) => {
-            unloadForm();
-            const listForm = components.renderListEdit(unloadForm, handleEditList);
-            _container.appendChild(listForm);
-        })
-
-
-        listWrapper.appendChild(editBtn);
+        const listHeader =  document.createElement('div');
+        listHeader.classList.add('list-header');
         
-        listWrapper.appendChild(renderedList);
+        // title for current list
+        const listName = document.createElement('h2')
+        listName.classList.add('list-title');
+        listName.textContent = _currentList.name;
+        listHeader.appendChild(listName);
+        
+        // edit button for current list
+        const editBtn = document.createElement('button');
+        editBtn.classList.add('edit-btn', 'mdi', 'mdi-playlist-edit');
+        editBtn.setAttribute('data-target', list.name);
+        // editBtn.textContent = 'edit';
+        editBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            unloadForm();
+            const listForm = components.renderListEdit(unloadForm, 
+                                                       handleEditList, 
+                                                       handleDeleteList);
+            container.appendChild(listForm);
+        })
+        listHeader.appendChild(editBtn);
+        // button to open add item form
+        const newItemBtn = document.createElement('button');
+        newItemBtn.classList.add('new-item-btn');
+        newItemBtn.textContent = 'new item';
+        newItemBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            unloadForm();
+            const itemForm = components.renderItemForm(unloadForm, 
+                                                       handleAddItem)
+            container.appendChild(itemForm);
+        });
+        listHeader.appendChild(newItemBtn);
+
+        listWrapper.appendChild(listHeader)
         listWrapper.appendChild(renderedList);
         
         // adding delete buttons for item elements
@@ -149,26 +180,16 @@ export const uiHandler = (container) => {
                 unloadForm();
                 const itemTitle = itemElement.getAttribute('data-title');
                 const item = _currentList.findItem(itemTitle);
-                const itemForm = components.renderItemEdit(item, unloadForm, handleEditItem);
-                _container.appendChild(itemForm);
+                const itemForm = components.renderItemEdit(item, 
+                                                           unloadForm, 
+                                                           handleEditItem,
+                                                           handleDeleteItem);
+                container.appendChild(itemForm);
                 
             })
             itemElement.appendChild(editBtn);
         })
 
-        // add button that opens form to add new item
-        const newItemBtn = document.createElement('button');
-        newItemBtn.classList.add('new-item-btn');
-        newItemBtn.textContent = 'new item';
-        newItemBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            if (!document.querySelector('.item-form'))
-            {
-                const itemForm = components.renderItemForm(unloadForm, handleAddItem)
-                _container.appendChild(itemForm);
-            }
-        });
-        listWrapper.appendChild(newItemBtn);
     }
    
     // removes listElement from DOM
@@ -177,10 +198,11 @@ export const uiHandler = (container) => {
         unloadForm();
     }
 
+    // unloads form element from dom
     const unloadForm = () => {
         const formElement = document.querySelector('.form-wrapper');
         if (formElement)
-            unloadElement(_container, formElement);
+            unloadElement(container, formElement);
     }
 
     // takes values of item form to add new item to current list
@@ -196,6 +218,8 @@ export const uiHandler = (container) => {
         loadList();
         unloadForm();
     }
+    
+    // handles editing of an item and updating dom
     const handleEditItem = () => {
         const form = document.querySelector('form');
 
@@ -211,6 +235,16 @@ export const uiHandler = (container) => {
         loadList();
         unloadForm();
     }
+
+    const handleDeleteItem = () => {
+        const form = document.querySelector('form');
+        const targetTitle = form.querySelector('#title-input').value;
+        _currentList.deleteItem(targetTitle);
+
+        unloadList();
+        loadList();
+        unloadForm();
+    }
     // takes values of list form to add new list to collection
     const handleAddList = () => {
         const name = document.querySelector('#name-input').value;
@@ -220,6 +254,7 @@ export const uiHandler = (container) => {
         unloadForm();
     }
     
+    // handles editing of list and updating dom
     const handleEditList = () => {
         _currentList.name = document.querySelector('#name-input').value;
 
@@ -227,6 +262,15 @@ export const uiHandler = (container) => {
         loadSidebar();
         unloadList();
         loadList();
+        unloadForm();
+    }
+
+    // handles deleting of a list and updating dom
+    const handleDeleteList = () => {
+        _collection.deleteList(_currentList.name)
+        unloadSidebar();
+        loadSidebar();
+        unloadList();
         unloadForm();
     }
     return {

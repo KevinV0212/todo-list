@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@mdi/font": "^7.2.96",
     "css-loader": "^6.8.1",
     "style-loader": "^3.3.3",
     "webpack": "^5.88.2",
