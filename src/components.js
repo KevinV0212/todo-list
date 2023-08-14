@@ -13,18 +13,43 @@ export const components= (() => {
      }
     // return rendered list itme
     const renderItem = (item) => {
-         const itemElement = document.createElement('div');
-         itemElement.classList.add('item');
-         itemElement.setAttribute('data-title', item.title)
-         for (const key in item) {
-             const infoElement = document.createElement('div');
-             infoElement.classList.add(`${key}`);
-             infoElement.textContent = `${item[key]}`;
-             itemElement.append(infoElement);
-         }
+         
+        const itemElement = document.createElement('div');
+        itemElement.classList.add('item');
+        itemElement.setAttribute('data-title', item.title)
+        
+        let desc = null;
+        // add elements for each todo item property
+        for (const key in item) {
+            const infoElement = document.createElement('div');
+            infoElement.classList.add(`${key}`);
+            infoElement.textContent = `${item[key]}`;
+            itemElement.append(infoElement);
 
-        const editBtn = document.createElement('button');
-         return itemElement;
+            if (key === 'desc')
+            {
+                infoElement.classList.add('hidden');
+                desc = infoElement;
+            }
+
+        }
+
+        // add event listener to show description when item is overed over
+        itemElement.addEventListener('mouseover', (e) => {
+            e.preventDefault()
+            desc.classList.remove('hidden')
+            desc.classList.add('visible')
+        })
+        itemElement.addEventListener('mouseout', (e) => {
+            e.preventDefault()
+            desc.classList.remove('visible')
+            desc.classList.add('hidden');
+        })
+
+
+
+
+        return itemElement;
      }
      
      // function that renders form for adding new items
@@ -178,7 +203,7 @@ export const components= (() => {
             confirmFunction();
         })
         formBtns.appendChild(confirmBtn);
-        
+
         listForm.appendChild(formBtns);
 
         formWrapper.appendChild(listForm)

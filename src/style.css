@@ -1,3 +1,4 @@
+
 /* soft reset */
 * {
     box-sizing:border-box;
@@ -25,19 +26,22 @@ body {
 }
 
 button {
+    font-size: 1rem;
+
     background-color: var(--background);
     border:none;
     color: var(--white-space);
 
+    cursor: pointer;
+
 }
 button:hover {
-    background-color: var(--accent);
+    background-color: var(--white-space);
     color:var(--background);
-
     cursor: pointer;
-}
-button:active{
-    filter: brightness(.8);
+    position:relative;
+    transform: scale(1.1);
+    transition: .2s;
 }
 
 .content {
@@ -70,6 +74,7 @@ header {
 
     border:none;
     border-radius: 5px;
+    border-bottom-left-radius:50px;
     box-shadow: 0 5px 10px var(--background-dark);
 }
 
@@ -90,6 +95,8 @@ header {
 
 .sidebar .add-btn {
     padding: 5px;
+
+    border: 2px solid var(--background);
     font-size: 1rem;
 }
 
@@ -121,12 +128,12 @@ header {
 }
 
 .list-header {
-    padding: 0 10px 20px 10px;
+    padding: 0 10px 0px 10px;
     display:grid;
     grid-template-columns: auto auto 1fr;
 
     gap: 10px;
-    border-bottom: 1px solid var(--background);
+    /* border-bottom: 3px solid var(--background); */
     justify-items: end;
     align-items: center;
 }
@@ -140,6 +147,15 @@ header {
     color:var(--white-space);  
       
 }
+
+.list-header .add-btn {
+    padding: 10px 20px;
+    border: 2px solid var(--background);
+    border-radius:5px;
+    font-size: 1rem;
+}
+
+
 .list-header .edit-btn:hover {
     padding: 0;
     
@@ -147,10 +163,6 @@ header {
     background:var(--white-space);
     border: 2px solid var(--background);
     color:var(--background);   
-}
-.new-item-btn {
-    display:block;
-    width:100px;
 }
 
 .list-title {
@@ -162,10 +174,39 @@ header {
     gap:20px;
 }
 .item {
-    display: flex;
+    position: relative;
+    
+    border-top: 2px solid var(--background);
+
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
+    grid-template-rows: repeat(2, auto); 
+    align-items:center;
+    gap:5px;
 }
+
+
 .item .title{
     flex:1;
+}
+
+.item .edit-btn {
+    padding: 5px;
+    
+    border:2px solid var(--background);
+    border-radius: 0 0 5px 5px;
+}
+
+.item .desc {
+    grid-column: 1 / 5;
+    grid-row: 2 / 3;
+
+    padding: 10px;
+    
+    background-color:var(--background);
+    color: var(--white-space);
+    border-radius: 0 0 10px 10px;
+
 }
 
 .form-wrapper {
@@ -221,7 +262,28 @@ form {
 
     display:flex;
     justify-content:space-between;
+    gap:15px;
+
 }
+
+.form-btns button {
+    flex: 1;
+    padding: 10px 0;
+    border-radius:2px;
+
+}
+.form-btns button:first-child {
+    border-top-right-radius: 30px;
+}
+
+.form-btns button:first-child::after {
+
+}
+
+.form-btns button:last-child  {
+    border-top-left-radius: 30px;
+}
+
 
 form input:not([type="radio"]) {
     width: 100%;
@@ -241,4 +303,12 @@ fieldset {
 .radio-group {
     display: flex;
     gap: 5px;
+}
+
+/* utility classes */
+.hidden {
+    display: none;
+}
+.visible {
+    display: block;
 }

@@ -145,7 +145,6 @@ export const uiHandler = (wrapper) => {
         const editBtn = document.createElement('button');
         editBtn.classList.add('edit-btn', 'mdi', 'mdi-playlist-edit');
         editBtn.setAttribute('data-target', list.name);
-        // editBtn.textContent = 'edit';
         editBtn.addEventListener('click', (e) => {
             e.preventDefault();
             unloadForm();
@@ -157,7 +156,7 @@ export const uiHandler = (wrapper) => {
         listHeader.appendChild(editBtn);
         // button to open add item form
         const newItemBtn = document.createElement('button');
-        newItemBtn.classList.add('new-item-btn');
+        newItemBtn.classList.add('add-btn');
         newItemBtn.textContent = 'new item';
         newItemBtn.addEventListener('click', (e) => {
             e.preventDefault();
@@ -174,8 +173,7 @@ export const uiHandler = (wrapper) => {
         // adding delete buttons for item elements
         itemElements.forEach(itemElement => {
             const editBtn = document.createElement('button');
-            editBtn.textContent = 'edit';
-            
+            editBtn.classList.add('edit-btn','mdi', 'mdi-pencil')            
             editBtn.addEventListener('click', () => {
                 unloadForm();
                 const itemTitle = itemElement.getAttribute('data-title');
@@ -185,7 +183,6 @@ export const uiHandler = (wrapper) => {
                                                            handleEditItem,
                                                            handleDeleteItem);
                 container.appendChild(itemForm);
-                
             })
             itemElement.appendChild(editBtn);
         })
