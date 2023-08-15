@@ -18,14 +18,14 @@ export const uiHandler = (wrapper) => {
     const _collection = collection();
     
     // sample elements
-    const testList1 = list('test1');
-    testList1.addItem(item('title1', 'desc1', 'date1', 'high'));
-    testList1.addItem(item('title2', 'desc2', 'date2', 'med'));
-    testList1.addItem(item('title3', 'desc3', 'date3', 'low'));
-    const testList2 = list('test2');
-    testList2.addItem(item('title1', 'desc1', 'date1', 'high'));
-    testList2.addItem(item('title2', 'desc2', 'date2', 'med'));
-    testList2.addItem(item('title3', 'desc3', 'date3', 'low'));
+    const testList1 = list('Chores');
+    testList1.addItem(item('Dishes', 'Wash and Dry Dishes', '08/14/2023', 'high'));
+    testList1.addItem(item('Vacuum', "Vacuum house. PS Don't forget to get under the sofa", '08/14/2023', 'med'));
+    testList1.addItem(item('Grocery Shopping', 'Pick up a can of pringles, a sponge, and a rubber glove', '08/14/2023', 'low'));
+    const testList2 = list('Work');
+    testList2.addItem(item('Report', 'Finish proof reading psychology report', '08/14/2023', 'high'));
+    testList2.addItem(item('Email Professor', 'Remind professor about club field trip', '08/14/2023', 'med'));
+    testList2.addItem(item('Work on project', "Finish putting together poster for cancer research", '08/14/2023', 'low'));
     _collection.addList(testList1);
     _collection.addList(testList2);
 
