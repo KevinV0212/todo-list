@@ -35,6 +35,7 @@ button {
     cursor: pointer;
 
 }
+
 button:hover {
     background-color: var(--white-space);
     color:var(--background);
@@ -112,7 +113,7 @@ header {
     background: none;
     color: var(--background);
     border:none;
-    border-top:2px solid var(--background);
+    border-top:3px solid var(--background);
 }
 
 .nav-btn:hover {
@@ -128,7 +129,6 @@ header {
 }
 
 .list-header {
-    padding: 0 10px 0px 10px;
     display:grid;
     grid-template-columns: auto auto 1fr;
 
@@ -176,7 +176,7 @@ header {
 .item {
     position: relative;
     
-    border-top: 2px solid var(--background);
+    border-top: 3px solid var(--background);
 
     display: grid;
     grid-template-columns: 1fr auto auto auto;
@@ -188,13 +188,23 @@ header {
 
 .item .title{
     flex:1;
+    padding: 5px;
 }
 
+.item .dueDate,
+.item .priority,
 .item .edit-btn {
     padding: 5px;
     
     border:2px solid var(--background);
     border-radius: 0 0 5px 5px;
+}
+
+
+.item .dueDate,
+.item .priority {
+    background-color: var(--background);
+    color: var(--white-space);
 }
 
 .item .desc {
