@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
     "watch": "webpack --watch",
-    "deploy-demo": "git push origin :gh-pages && git subtree push --prefix dist origin gh-pages"
+    "deploy-demo": "git subtree push --prefix dist origin gh-pages"
   },
   "author": "",
   "license": "ISC",
