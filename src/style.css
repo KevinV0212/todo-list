@@ -113,6 +113,8 @@ header {
 .navbar {
     display: flex;
     flex-direction: column;
+
+    animation: show .5s linear;
 }
 
 .nav-btn {
@@ -181,6 +183,8 @@ header {
     display: flex;
     flex-direction: column;
     gap:20px;
+
+    animation: show .5s linear;
 }
 .item {
     position: relative;
@@ -227,6 +231,8 @@ header {
     border-radius: 0 0 10px 10px;
 
 }
+
+
 
 .form-wrapper {
     height:100vh;
@@ -346,8 +352,21 @@ fieldset {
 
 /* utility classes */
 .hidden {
-    display: none;
+    display:none;
 }
 .visible {
     display: block;
+    animation: show .5s ease-in-out;
+}
+
+@keyframes show {
+    0% {
+      transform: rotateX(-90deg)
+    }
+    70% {
+      transform: rotateX(20deg)
+    }
+    100% {
+      transform: rotateX(0deg)
+    }
 }
