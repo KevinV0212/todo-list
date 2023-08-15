@@ -1,6 +1,8 @@
 import {item, list, collection} from './todo.js'
 import {components} from './components.js';
 
+import { compareAsc, format } from 'date-fns'
+
 import '../node_modules/@mdi/font/css/materialdesignicons.css';
 
 // creates a uiHandler that will load dom elements within 'wrapper' element
@@ -207,9 +209,18 @@ export const uiHandler = (wrapper) => {
         const title = document.querySelector('#title-input').value;
         const desc = document.querySelector('#desc-input').value;
         const date = document.querySelector('#date-input').value;
-        const priority = document.querySelector(':checked').value;
+        const priority = document.querySelector(':checked');
         
-        const newItem = item(title, desc, date, priority);
+        if (!title || !desc || !date || !priority)
+        {
+            window.alert('Please Fill in All Fields');
+            return;
+        }
+        // priority has to be checked separately due to nature of radio buttons
+        const priorityVal = priority.value;
+        const dateObj = format(new Date(`${date}T00:00`), 'MM/dd/yyyy');
+
+        const newItem = item(title, desc, dateObj, priorityVal);
         _currentList.addItem(newItem);
         unloadList();
         loadList();
@@ -223,10 +234,19 @@ export const uiHandler = (wrapper) => {
         const oldTitle = form.getAttribute('data-target');
         const title = form.querySelector('#title-input').value;
         const desc = form.querySelector('#desc-input').value;
-        const date = form.querySelector('#date-input').value;
-        const priority = document.querySelector(':checked').value;
+        const date = form.querySelector('#date-input').value;        
+        const priority = document.querySelector(':checked');
         
-        const newItem = item(title, desc, date, priority);
+        if (!title || !desc || !date || !priority)
+        {
+            window.alert('Please Fill in All Fields');
+            return;
+        }
+        // priority has to be checked separately due to nature of radio buttons
+        const priorityVal = priority.value;
+        const dateObj = format(new Date(`${date}T00:00`), 'MM/dd/yyyy');
+        
+        const newItem = item(title, desc, dateObj, priorityVal);
         _currentList.replaceItem(oldTitle, newItem);
         unloadList();
         loadList();

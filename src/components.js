@@ -92,7 +92,7 @@ export const components= (() => {
         dateGroup.classList.add('form-group');
 
         const dateLabel = '<label for="date-input">Date</label>';
-        const dateInput = '<input id="date-input" name="date-input"/>';
+        const dateInput = '<input type="date" id="date-input" name="date-input"/>';
         dateGroup.innerHTML = dateLabel + dateInput;
         itemForm.appendChild(dateGroup);
 
